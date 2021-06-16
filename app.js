@@ -1,7 +1,7 @@
 const submitText = (e) => {
 	e.preventDefault();
 	let inputVal = document.getElementById("txt").value
-	if (inputVal !== '') {
+	if (inputVal.trim() !== '') {
 		let newItem = document.createElement('li')
 
 		newItem.innerHTML = `
