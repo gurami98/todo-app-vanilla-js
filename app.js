@@ -40,10 +40,10 @@ const editItem = (event) => {
 	beingEdited = !beingEdited
 	let item = event.target.parentElement
 	let child1 = item.firstElementChild
-	let checkBox = item.getElementsByTagName('input')[0]
 	let button = item.getElementsByTagName('button')[0]
 	let newElem
 	if (beingEdited) {
+		let checkBox = item.getElementsByTagName('input')[0]
 		checkBox.disabled = true
 		button.disabled = true
 		newElem = document.createElement('input')
@@ -53,6 +53,7 @@ const editItem = (event) => {
 		item.replaceChild(newElem, child1)
 		newElem.focus()
 	} else {
+		let checkBox = item.getElementsByTagName('input')[1]
 		checkBox.disabled = false
 		button.disabled = false
 		newElem = document.createElement('span')
