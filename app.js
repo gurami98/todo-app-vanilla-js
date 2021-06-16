@@ -19,14 +19,6 @@ const markDone = (event) => {
 	let item = event.target.parentElement;
 	let checkBox = event.target
 
-	if(checkBox.checked) {
-		console.log('checked')
-		console.log(item)
-		item.classList.add('active-item')
-	}
-	else {
-		console.log('not checked')
-		console.log(item)
-		item.classList.remove('active-item')
-	}
+	if(checkBox.checked) item.classList.add('active-item')
+	else item.classList.remove('active-item')
 }
