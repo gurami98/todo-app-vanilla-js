@@ -5,9 +5,9 @@ const submitText = (e) => {
 		let newItem = document.createElement('li')
 
 		newItem.innerHTML = `
-                <span> ${inputVal} </span>
+                <span ondblclick="editItem(event)"> ${inputVal} </span>
                 <input type="checkbox" class="checkItem" onclick="markDone(event)">
-                <button class="removeItem" onclick="removeItem(event)">X</button>
+                <button class="removeItem" onclick="removeItem(event)">DELETE</button>
                 <button class="editItem" onclick="editItem(event)">EDIT</button>
                 `
 		document.getElementById("myList").append(newItem)
@@ -31,33 +31,48 @@ const markDone = (event) => {
 
 const removeItem = (event) => {
 	if (!beingEdited) {
-		let item = event.target.parentElement;
-		item.remove()
+		if (confirm('Are you sure you want to delete this item')) {
+			let item = event.target.parentElement;
+			item.remove()
+		}
 	}
 }
 
 const editItem = (event) => {
-	beingEdited = !beingEdited
-	let item = event.target.parentElement
-	let child1 = item.firstElementChild
-	let button = item.getElementsByTagName('button')[0]
+
+	const item = event.target.parentElement
+	const child1 = item.firstElementChild
+	beingEdited = child1.nodeName === 'SPAN'
+	const button = item.getElementsByTagName('button')[0]
 	let newElem
+	let checkBox;
 	if (beingEdited) {
-		let checkBox = item.getElementsByTagName('input')[0]
+		checkBox = item.getElementsByTagName('input')[0]
 		checkBox.disabled = true
 		button.disabled = true
 		newElem = document.createElement('input')
 		newElem.classList.add('editText')
 		newElem.type = 'text'
 		newElem.value = child1.innerHTML
+		newElem.addEventListener("keyup", (event) => {
+			if (event.code === 'Enter') {
+				event.preventDefault();
+				editItem(event)
+			}
+		});
 		item.replaceChild(newElem, child1)
 		newElem.focus()
 	} else {
-		let checkBox = item.getElementsByTagName('input')[1]
-		checkBox.disabled = false
-		button.disabled = false
-		newElem = document.createElement('span')
-		newElem.innerHTML = child1.value
-		item.replaceChild(newElem, child1)
+		let inputText = item.getElementsByTagName('input')[0]
+		if (inputText.value.trim() !== '') {
+			checkBox = item.getElementsByTagName('input')[1]
+			checkBox.disabled = false
+			button.disabled = false
+			newElem = document.createElement('span')
+			newElem.innerHTML = child1.value
+			item.replaceChild(newElem, child1)
+		}else{
+			alert('Enter Text')
+		}
 	}
 }
