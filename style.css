@@ -16,6 +16,9 @@ span{
     font-size: 30px;
     word-wrap: break-word;
     display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 form input{
@@ -46,17 +49,23 @@ ul li{
     justify-content: space-between;
     align-items: center;
     line-height: 50px;
+    padding: 5px 0;
+}
+
+ul li input, #content-div input[type="text"]{
+    width: 156px;
 }
 
 .active-item{
     text-decoration: line-through;
+    color: gray;
 }
 
 .grayed-out{
     background-color: gray;
 }
 
-#myList button{
+#myList button, #content-div button{
     background-color: blue;
     color: white;
     border: 0;
@@ -65,10 +74,58 @@ ul li{
     height: 25px;
 }
 
-#myList input[type="checkbox"]{
+#myList input[type="checkbox"], #content-div input[type='checkbox']{
     height: 25px;
     width: 25px;
     background-color: #eee;
+}
+
+#content-div{
+    flex-direction: column;
+    background-color: black;
+    position: absolute;
+    top: 300px;
+    left: 0;
+    right: 0;
+    width: 600px;
+    height: 500px;
+    margin: 0 auto;
+    display: none;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+}
+
+#content-div #close-window{
+    width: 50px;
+    height: 50px;
+    float: right;
+    background-color: red;
+}
+
+#content-div span{
+    width: 100%;
+    text-align: center;
+}
+
+.editText{
+    width: 156px;
+    text-align: center;
+    margin:7.5px auto;
+}
+
+.controls{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.controls input, .controls button{
+    margin: 200px 10px 0;
+}
+
+#content-div > button:first-of-type{
+    margin-left: auto;
 }
 
 

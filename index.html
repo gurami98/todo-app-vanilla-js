@@ -15,6 +15,16 @@
 
     </ul>
 
+    <div id="content-div">
+        <button onclick="closeWindow()" id="close-window">X</button>
+        <span ondblclick="editContainerItem(event)" id="window-text"> </span>
+        <div class="controls">
+            <input type="checkbox" class="checkItem" onclick="markContainerDone(event)">
+            <button class="removeItem" onclick="removeContainerItem(event)">DELETE</button>
+            <button class="editItem" onclick="editContainerItem(event)">EDIT</button>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
