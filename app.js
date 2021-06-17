@@ -21,11 +21,18 @@ let beingEdited = false;
 
 const markDone = (event) => {
 	if (!beingEdited) {
-		let item = event.target.parentElement;
+		let line = event.target.parentElement;
+		let item = event.target.parentElement.firstElementChild;
 		let checkBox = event.target
 
-		if (checkBox.checked) item.classList.add('active-item')
-		else item.classList.remove('active-item')
+		if (checkBox.checked) {
+			item.classList.add('active-item')
+			line.classList.add('grayed-out')
+		}
+		else{
+			item.classList.remove('active-item')
+			line.classList.remove('grayed-out')
+		}
 	}
 }
 
