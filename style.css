@@ -11,7 +11,7 @@ form{
     justify-content: center;
 }
 
-span{
+li span{
     width: 160px;
     font-size: 30px;
     word-wrap: break-word;
@@ -21,19 +21,43 @@ span{
     white-space: nowrap;
 }
 
+#window-text{
+    font-size: 30px;
+    word-wrap: break-word;
+    display: inline-block;
+    text-align: center;
+    padding: 5px 10px 0;
+    height: 300px;
+}
+
+textarea{
+    resize: none;
+    width: 400px;
+    margin: 0 auto;
+    height: 305px !important;
+    box-sizing: border-box;
+}
+
 form input{
+    outline:none;
+    text-indent: 5px;
     width: 200px;
     height: 30px;
+    border-radius: 10px 0 0 10px;
 }
 
 #add{
     border: 0;
-    border-radius: 5px;
+    border-radius: 0 10px 10px 0;
     color: white;
     width: 100px;
     height: 34px;
     background-color: blue;
-    margin-left: 10px;
+}
+
+#add:hover{
+    cursor: pointer;
+    opacity: 0.8;
 }
 
 ul{
@@ -82,7 +106,7 @@ ul li input, #content-div input[type="text"]{
 
 #content-div{
     flex-direction: column;
-    background-color: black;
+    background-color: white;
     position: absolute;
     top: 300px;
     left: 0;
@@ -91,28 +115,38 @@ ul li input, #content-div input[type="text"]{
     height: 500px;
     margin: 0 auto;
     display: none;
-    border-radius: 5px;
+    border-radius: 15px;
     text-align: center;
-    color: white;
+    color: black;
+    box-shadow: 0 0 30px 0 black;
+}
+
+#content-div:last-child{
+    align-self: end;
 }
 
 #content-div #close-window{
-    width: 50px;
-    height: 50px;
+    width: 25px;
+    height: 25px;
     float: right;
     background-color: red;
+    border-radius: 10px;
 }
 
-#content-div span{
-    width: 100%;
-    text-align: center;
+.removeItem{
+    background-color: red !important;
 }
 
-.editText{
-    width: 156px;
-    text-align: center;
-    margin:7.5px auto;
-}
+/*#content-div span{*/
+/*    !*width: 100%;*!*/
+/*    !*text-align: center;*!*/
+/*}*/
+
+/*!*.editText{*!*/
+/*!*    width: 156px;*!*/
+/*!*    text-align: center;*!*/
+/*!*    margin:7.5px auto;*!*/
+/*!*}*!*/
 
 .controls{
     display: flex;
@@ -121,7 +155,7 @@ ul li input, #content-div input[type="text"]{
 }
 
 .controls input, .controls button{
-    margin: 200px 10px 0;
+    margin: 120px 10px 0;
 }
 
 #content-div > button:first-of-type{

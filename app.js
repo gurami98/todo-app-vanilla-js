@@ -28,18 +28,17 @@ const displayContent = (event) => {
 	let text = document.getElementById('window-text')
 	contentContainer.style.display = 'flex'
 	text.innerHTML = event.target.innerHTML
-	event.target.innerHTML = "shevcvale"
+	console.log(text)
+	console.log(event.target.innerHTML)
 	id = event.target.id
-	console.log(event.target.id)
-	console.log(event.target)
 }
 
 const closeWindow = (event) => {
 	contentContainer.style.display = 'none'
 	const contentDiv = document.getElementById('content-div')
 	const child2 = contentDiv.children[1]
-	console.log(contentDiv)
-	console.log(child2)
+	//console.log(contentDiv)
+	//console.log(child2)
 	let targetEl = document.getElementById(id.toString())
 	if(child2.innerHTML === ''){
 		targetEl.parentElement.remove()
@@ -62,21 +61,6 @@ const markDone = (event) => {
 	}
 }
 
-const markContainerDone = (event) => {
-	if (!beingEdited) {
-		const contentDiv = document.getElementById('content-div')
-		const child2 = contentDiv.children[1]
-		let checkBox = event.target
-
-		if (checkBox.checked) {
-			child2.classList.add('active-item')
-		}
-		else{
-			child2.classList.remove('active-item')
-		}
-	}
-}
-
 const removeItem = (event) => {
 	if (!beingEdited) {
 		if (confirm('Are you sure you want to delete this item')) {
@@ -91,10 +75,7 @@ const removeContainerItem = (event) => {
 		if (confirm('Are you sure you want to delete this item')) {
 			const contentDiv = document.getElementById('content-div')
 			const child2 = contentDiv.children[1]
-			const child3 = contentDiv.children[2]
 			child2.innerHTML = ''
-			//child3.remove()
-
 		}
 	}
 }
@@ -142,35 +123,74 @@ const editItem = (event) => {
 }
 
 const editContainerItem = (event) => {
-	const contentDiv = document.getElementById('content-div')
-	const child2 = contentDiv.children[1]
-	console.log(child2)
-	beingEdited = child2.nodeName === 'SPAN'
+	//const contentDiv = document.getElementById('content-div')
+	const text = document.getElementById('window-text')
+	beingEdited = text.nodeName === 'SPAN'
 	let newElem
 	if (beingEdited) {
-		newElem = document.createElement('input')
+		newElem = document.createElement('textarea')
 		newElem.classList.add('editText')
+		newElem.setAttribute('id', 'window-text')
 		newElem.type = 'text'
-		newElem.value = child2.innerHTML
+		newElem.value = text.innerHTML
 		newElem.addEventListener("keyup", (event) => {
 			if (event.code === 'Enter') {
 				event.preventDefault();
 				editContainerItem(event)
 			}
 		});
-		contentDiv.replaceChild(newElem, child2)
+		text.replaceWith(newElem)
 		newElem.focus()
+		console.log(text.innerHTML)
 	} else {
-		let inputText = contentDiv.getElementsByTagName('input')[0]
-		if (inputText.value.trim() !== '') {
+		//let inputText = contentDiv.getElementsByTagName('input')[0]
+		if (text.value.trim() !== '') {
 			newElem = document.createElement('span')
-			newElem.innerHTML = child2.value
+			newElem.innerHTML = text.value
+			newElem.setAttribute('id', 'window-text')
 			newElem.addEventListener('dblclick', (e)=>{
 				editContainerItem(e)
 			})
-			contentDiv.replaceChild(newElem, child2)
+			text.replaceWith(newElem)
+			console.log(text.value)
 		}else{
 			alert('Enter Text')
 		}
 	}
 }
+
+// const editContainerItem = (event) => {
+// 	const contentDiv = document.getElementById('content-div')
+// 	const child2 = contentDiv.children[1]
+// 	//console.log(child2)
+// 	beingEdited = child2.nodeName === 'SPAN'
+// 	let newElem
+// 	if (beingEdited) {
+// 		newElem = document.createElement('input')
+// 		newElem.classList.add('editText')
+// 		newElem.type = 'text'
+// 		newElem.value = child2.innerHTML
+// 		newElem.addEventListener("keyup", (event) => {
+// 			if (event.code === 'Enter') {
+// 				event.preventDefault();
+// 				editContainerItem(event)
+// 			}
+// 		});
+// 		contentDiv.replaceChild(newElem, child2)
+// 		newElem.focus()
+// 		console.log(child2.innerHTML)
+// 	} else {
+// 		let inputText = contentDiv.getElementsByTagName('input')[0]
+// 		if (inputText.value.trim() !== '') {
+// 			newElem = document.createElement('span')
+// 			newElem.innerHTML = child2.value
+// 			newElem.addEventListener('dblclick', (e)=>{
+// 				editContainerItem(e)
+// 			})
+// 			contentDiv.replaceChild(newElem, child2)
+// 			console.log(child2.value)
+// 		}else{
+// 			alert('Enter Text')
+// 		}
+// 	}
+// }
