@@ -1,16 +1,19 @@
+const contentContainer = document.getElementById('content-div')
 let count = 0;
+let beingEdited = false;
+let id;
 const submitText = (e) => {
 	e.preventDefault();
 	let inputVal = document.getElementById("txt").value
 	if (inputVal.trim() !== '') {
 		let newItem = document.createElement('li')
 		newItem.innerHTML = `
-                <span onclick="displayContent(event)" ondblclick="editItem(event)"> ${inputVal} </span>
                 <input type="checkbox" class="checkItem" onclick="markDone(event)">
+                <span onclick="displayContent(event)"> ${inputVal} </span>
                 <button class="removeItem" onclick="removeItem(event)">DELETE</button>
                 <button class="editItem" onclick="editItem(event)">EDIT</button>
                 `
-		newItem.children[0].setAttribute('id', count.toString())
+		newItem.children[1].setAttribute('id', count.toString())
 		count++;
 		document.getElementById("myList").append(newItem)
 		document.getElementById("txt").value = ''
@@ -19,178 +22,139 @@ const submitText = (e) => {
 	}
 }
 
-let beingEdited = false;
-
-let contentContainer = document.getElementById('content-div')
-
-let id;
 const displayContent = (event) => {
-	let text = document.getElementById('window-text')
+	const windowText = document.getElementById('window-text')
 	contentContainer.style.display = 'flex'
-	text.innerHTML = event.target.innerHTML
-	console.log(text)
-	console.log(event.target.innerHTML)
+	windowText.innerHTML = event.target.innerHTML
 	id = event.target.id
 }
 
 const closeWindow = (event) => {
-	contentContainer.style.display = 'none'
-	const contentDiv = document.getElementById('content-div')
-	const child2 = contentDiv.children[1]
-	//console.log(contentDiv)
-	//console.log(child2)
+	const text = contentContainer.children[1]
 	let targetEl = document.getElementById(id.toString())
-	if(child2.innerHTML === ''){
-		targetEl.parentElement.remove()
+	if (text.tagName !== 'TEXTAREA') {
+		if (text.innerHTML === '') {
+			targetEl.parentElement.remove()
+		} else {
+			targetEl.innerHTML = text.innerHTML
+		}
 	}else{
-		targetEl.innerHTML = child2.innerHTML
+		let oldSpan = document.createElement('span')
+		oldSpan.innerHTML = oldVal
+		oldSpan.setAttribute('id', 'window-text')
+		oldSpan.addEventListener('dblclick', (event)=>{
+			editContainerItem(event)
+		})
+		text.replaceWith(oldSpan)
 	}
+	contentContainer.style.display = 'none'
+	beingEdited = false;
 }
 
 const markDone = (event) => {
 	if (!beingEdited) {
-		let item = event.target.parentElement.firstElementChild;
+		let item = event.target.parentElement.children[1];
 		let checkBox = event.target
 
-		if (checkBox.checked) {
-			item.classList.add('active-item')
-		}
-		else{
-			item.classList.remove('active-item')
-		}
+		if (checkBox.checked) item.classList.add('active-item')
+		else item.classList.remove('active-item')
 	}
 }
 
 const removeItem = (event) => {
-	if (!beingEdited) {
-		if (confirm('Are you sure you want to delete this item')) {
+	if (!beingEdited && confirm('Are you sure you want to delete this item')) {
 			let item = event.target.parentElement;
 			item.remove()
-		}
 	}
 }
 
 const removeContainerItem = (event) => {
-	if (!beingEdited) {
-		if (confirm('Are you sure you want to delete this item')) {
-			const contentDiv = document.getElementById('content-div')
-			const child2 = contentDiv.children[1]
-			child2.innerHTML = ''
-		}
+	if (!beingEdited && confirm('Are you sure you want to delete this item')) {
+			const text = contentContainer.children[1]
+			text.innerHTML = ''
 	}
 }
 
 const editItem = (event) => {
-	console.log(event.target)
 	const item = event.target.parentElement
-	const child1 = item.firstElementChild
-	beingEdited = child1.nodeName === 'SPAN'
-	const button = item.getElementsByTagName('button')[0]
+	const text = item.children[1]
+	const id = text.id
+	beingEdited = text.nodeName === 'SPAN'
+	const deleteBtn = item.getElementsByTagName('button')[0]
+	const editBtn = item.getElementsByTagName('button')[1]
+	const checkBox = item.getElementsByTagName('input')[0]
 	let newElem
-	let checkBox;
 	if (beingEdited) {
-		checkBox = item.getElementsByTagName('input')[0]
+		editBtn.innerHTML = 'SAVE'
 		checkBox.disabled = true
-		button.disabled = true
+		deleteBtn.disabled = true
 		newElem = document.createElement('input')
 		newElem.classList.add('editText')
+		newElem.setAttribute('id', `${id}`)
 		newElem.type = 'text'
-		newElem.value = child1.innerHTML
+		newElem.value = text.innerHTML
 		newElem.addEventListener("keyup", (event) => {
 			if (event.code === 'Enter') {
 				event.preventDefault();
 				editItem(event)
 			}
 		});
-		item.replaceChild(newElem, child1)
+		item.replaceChild(newElem, text)
 		newElem.focus()
 	} else {
-		let inputText = item.getElementsByTagName('input')[0]
+		let inputText = item.getElementsByTagName('input')[1]
 		if (inputText.value.trim() !== '') {
-			checkBox = item.getElementsByTagName('input')[1]
+			editBtn.innerHTML = 'EDIT'
 			checkBox.disabled = false
-			button.disabled = false
+			deleteBtn.disabled = false
 			newElem = document.createElement('span')
-			newElem.innerHTML = child1.value
-			newElem.addEventListener('dblclick', (e)=>{
-				editItem(e)
+			newElem.setAttribute('id', `${id}`)
+			newElem.innerHTML = text.value
+			newElem.addEventListener('click', (e)=>{
+				displayContent(e)
 			})
-			item.replaceChild(newElem, child1)
+			item.replaceChild(newElem, text)
 		}else{
 			alert('Enter Text')
 		}
 	}
 }
 
+let oldVal
 const editContainerItem = (event) => {
-	//const contentDiv = document.getElementById('content-div')
-	const text = document.getElementById('window-text')
-	beingEdited = text.nodeName === 'SPAN'
+	const windowText = document.getElementById('window-text')
+	const editBtn = document.getElementsByClassName('controls')[0].children[1]
+	beingEdited = windowText.nodeName === 'SPAN'
 	let newElem
 	if (beingEdited) {
+		oldVal = windowText.innerHTML
+		editBtn.innerHTML = 'SAVE'
 		newElem = document.createElement('textarea')
 		newElem.classList.add('editText')
 		newElem.setAttribute('id', 'window-text')
 		newElem.type = 'text'
-		newElem.value = text.innerHTML
+		newElem.value = windowText.innerHTML
 		newElem.addEventListener("keyup", (event) => {
 			if (event.code === 'Enter') {
 				event.preventDefault();
 				editContainerItem(event)
 			}
 		});
-		text.replaceWith(newElem)
+		windowText.replaceWith(newElem)
 		newElem.focus()
-		console.log(text.innerHTML)
 	} else {
-		//let inputText = contentDiv.getElementsByTagName('input')[0]
-		if (text.value.trim() !== '') {
+		if (windowText.value.trim() !== '') {
+			editBtn.innerHTML = 'EDIT'
 			newElem = document.createElement('span')
-			newElem.innerHTML = text.value
+			newElem.innerHTML = windowText.value
 			newElem.setAttribute('id', 'window-text')
 			newElem.addEventListener('dblclick', (e)=>{
 				editContainerItem(e)
 			})
-			text.replaceWith(newElem)
-			console.log(text.value)
+			windowText.replaceWith(newElem)
+			closeWindow(event)
 		}else{
 			alert('Enter Text')
 		}
 	}
 }
-
-// const editContainerItem = (event) => {
-// 	const contentDiv = document.getElementById('content-div')
-// 	const child2 = contentDiv.children[1]
-// 	//console.log(child2)
-// 	beingEdited = child2.nodeName === 'SPAN'
-// 	let newElem
-// 	if (beingEdited) {
-// 		newElem = document.createElement('input')
-// 		newElem.classList.add('editText')
-// 		newElem.type = 'text'
-// 		newElem.value = child2.innerHTML
-// 		newElem.addEventListener("keyup", (event) => {
-// 			if (event.code === 'Enter') {
-// 				event.preventDefault();
-// 				editContainerItem(event)
-// 			}
-// 		});
-// 		contentDiv.replaceChild(newElem, child2)
-// 		newElem.focus()
-// 		console.log(child2.innerHTML)
-// 	} else {
-// 		let inputText = contentDiv.getElementsByTagName('input')[0]
-// 		if (inputText.value.trim() !== '') {
-// 			newElem = document.createElement('span')
-// 			newElem.innerHTML = child2.value
-// 			newElem.addEventListener('dblclick', (e)=>{
-// 				editContainerItem(e)
-// 			})
-// 			contentDiv.replaceChild(newElem, child2)
-// 			console.log(child2.value)
-// 		}else{
-// 			alert('Enter Text')
-// 		}
-// 	}
-// }

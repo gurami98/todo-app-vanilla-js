@@ -3,6 +3,16 @@
     padding: 0;
 }
 
+#cover{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    top: 0;
+    z-index: 1;
+    display: none;
+}
+
 form{
     width: 500px;
     margin: 200px auto 0;
@@ -19,9 +29,10 @@ li span{
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    margin-left: 5px;
 }
 
-#window-text{
+#content-div span{
     font-size: 30px;
     word-wrap: break-word;
     display: inline-block;
@@ -30,11 +41,16 @@ li span{
     height: 300px;
 }
 
-textarea{
+#content-div textarea{
+    font-size: 30px;
+    word-wrap: break-word;
+    display: inline-block;
+    text-align: center;
+    padding: 5px 10px 0;
     resize: none;
     width: 400px;
     margin: 0 auto;
-    height: 305px !important;
+    height: 305px;
     box-sizing: border-box;
 }
 
@@ -52,10 +68,10 @@ form input{
     color: white;
     width: 100px;
     height: 34px;
-    background-color: blue;
+    background-color: #5cb85c;
 }
 
-#add:hover{
+button:hover{
     cursor: pointer;
     opacity: 0.8;
 }
@@ -74,10 +90,14 @@ ul li{
     align-items: center;
     line-height: 50px;
     padding: 5px 0;
+    height: 50px;
 }
 
 ul li input, #content-div input[type="text"]{
     width: 156px;
+    height: 21px;
+    margin-left: 5px;
+    outline:none;
 }
 
 .active-item{
@@ -89,8 +109,8 @@ ul li input, #content-div input[type="text"]{
     background-color: gray;
 }
 
-#myList button, #content-div button{
-    background-color: blue;
+ul li button, .controls button{
+    background-color: #0275d8;
     color: white;
     border: 0;
     border-radius: 5px;
@@ -98,27 +118,29 @@ ul li input, #content-div input[type="text"]{
     height: 25px;
 }
 
-#myList input[type="checkbox"], #content-div input[type='checkbox']{
+#myList input[type="checkbox"]{
     height: 25px;
     width: 25px;
     background-color: #eee;
 }
 
 #content-div{
+    z-index: 10;
     flex-direction: column;
     background-color: white;
     position: absolute;
-    top: 300px;
+    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
     width: 600px;
     height: 500px;
-    margin: 0 auto;
+    margin: auto;
     display: none;
-    border-radius: 15px;
+    border-radius: 10px;
     text-align: center;
     color: black;
-    box-shadow: 0 0 30px 0 black;
+    box-shadow: 0 0 50px 10px grey;
 }
 
 #content-div:last-child{
@@ -129,24 +151,20 @@ ul li input, #content-div input[type="text"]{
     width: 25px;
     height: 25px;
     float: right;
-    background-color: red;
-    border-radius: 10px;
+    background-color: #d9534f;
+    border-radius: 0 10px 0 10px;
+    border: 0;
 }
 
 .removeItem{
-    background-color: red !important;
+    background-color: #d9534f;
+    margin-left: 185px;
+    margin-right: 5px;
 }
 
-/*#content-div span{*/
-/*    !*width: 100%;*!*/
-/*    !*text-align: center;*!*/
-/*}*/
-
-/*!*.editText{*!*/
-/*!*    width: 156px;*!*/
-/*!*    text-align: center;*!*/
-/*!*    margin:7.5px auto;*!*/
-/*!*}*!*/
+#content-div .removeItem{
+    background-color: #d9534f;
+}
 
 .controls{
     display: flex;
