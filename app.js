@@ -2,6 +2,7 @@ const contentContainer = document.getElementById('content-div')
 const selectAll = document.getElementById('select-all')
 let beingEdited = false;
 let itemArr = []
+let selectedItemArr = []
 let checked = false
 const iterateArr = () => {
 	selectAll.checked = itemArr.every(item => item.children[0].checked)
@@ -185,4 +186,12 @@ const closeWindow = () => {
 	}
 	contentContainer.style.display = 'none'
 	beingEdited = false;
+}
+
+const deleteSelected = () => {
+	if(itemArr.length === 0) alert('Check at least one item')
+	else itemArr = itemArr.filter(item => {
+		if (item.children[0].checked) item.remove()
+		return !item.children[0].checked;
+	})
 }
