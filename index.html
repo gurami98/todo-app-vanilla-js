@@ -8,12 +8,28 @@
 <body>
     <form onsubmit="submitText(event)">
         <input type="text" id="txt">
-        <button>ADD</button>
+        <button id="add">ADD</button>
     </form>
+
+    <div id="checker">
+        <input type="checkbox" id="select-all" name="select-all" onclick="tick()">
+        <label for="select-all">Select All</label>
+    </div>
+
 
     <ul id="myList">
 
     </ul>
+
+    <div id="content-div">
+        <button onclick="closeWindow()" id="close-window">X</button>
+        <span id="window-text"> </span>
+        <textarea id="editText"></textarea>
+        <div class="controls">
+            <button class="removeItem" id="window-item-delete">DELETE</button>
+            <button class="editItem" id="window-item-edit">EDIT</button>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>

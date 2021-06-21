@@ -3,6 +3,16 @@
     padding: 0;
 }
 
+#cover{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    top: 0;
+    z-index: 1;
+    display: none;
+}
+
 form{
     width: 500px;
     margin: 200px auto 0;
@@ -11,24 +21,64 @@ form{
     justify-content: center;
 }
 
-form input{
-    width: 200px;
-    height: 30px;
+li span{
+    width: 160px;
+    font-size: 30px;
+    word-wrap: break-word;
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-left: 5px;
 }
 
-form button{
+#content-div span{
+    font-size: 30px;
+    word-wrap: break-word;
+    display: inline-block;
+    text-align: center;
+    padding: 5px 10px 0;
+    height: 300px;
+}
+
+#content-div textarea{
+    display: none;
+    font-size: 30px;
+    word-wrap: break-word;
+    text-align: center;
+    padding: 5px 10px 0;
+    resize: none;
+    width: 400px;
+    margin: 0 auto;
+    height: 305px;
+    box-sizing: border-box;
+}
+
+form input{
+    outline:none;
+    text-indent: 5px;
+    width: 200px;
+    height: 30px;
+    border-radius: 10px 0 0 10px;
+}
+
+#add{
     border: 0;
-    border-radius: 5px;
+    border-radius: 0 10px 10px 0;
     color: white;
     width: 100px;
     height: 34px;
-    background-color: blue;
-    margin-left: 10px;
+    background-color: #5cb85c;
+}
+
+button:hover{
+    cursor: pointer;
+    opacity: 0.8;
 }
 
 ul{
     width: 500px;
-    margin: 100px auto 0;
+    margin: 50px auto 0;
     list-style: none;
 }
 
@@ -37,12 +87,114 @@ ul li{
     flex-direction: row;
     width: 500px;
     justify-content: space-between;
-    line-height: 40px;
+    align-items: center;
+    line-height: 50px;
+    padding: 5px 0;
+    height: 50px;
+}
+
+ul li input, #content-div input[type="text"]{
+    width: 156px;
+    height: 21px;
+    margin-left: 5px;
+    outline:none;
 }
 
 .active-item{
-    color: red;
     text-decoration: line-through;
+    color: gray;
 }
+
+.grayed-out{
+    background-color: gray;
+}
+
+ul li button, .controls button{
+    background-color: #0275d8;
+    color: white;
+    border: 0;
+    border-radius: 5px;
+    width: 60px;
+    height: 25px;
+}
+
+#myList input[type="checkbox"]{
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
+#myList li input[type="text"]{
+    display: none;
+}
+
+#content-div{
+    z-index: 10;
+    flex-direction: column;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 600px;
+    height: 500px;
+    margin: auto;
+    display: none;
+    border-radius: 10px;
+    text-align: center;
+    color: black;
+    box-shadow: 0 0 50px 10px grey;
+}
+
+#content-div:last-child{
+    align-self: end;
+}
+
+#content-div #close-window{
+    width: 25px;
+    height: 25px;
+    float: right;
+    background-color: #d9534f;
+    border-radius: 0 10px 0 10px;
+    border: 0;
+}
+
+.removeItem{
+    background-color: #d9534f;
+    margin-left: 185px;
+    margin-right: 5px;
+}
+
+#content-div .removeItem{
+    background-color: #d9534f;
+}
+
+.controls{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.controls input, .controls button{
+    margin: 120px 10px 0;
+}
+
+#content-div > button:first-of-type{
+    margin-left: auto;
+}
+
+#checker{
+    width: 150px;
+    margin: 50px auto 0;
+    font-size: 24px;
+}
+
+#checker input{
+    width: 25px;
+    height: 25px;
+    margin-top: -5px;
+}
+
 
 
