@@ -116,26 +116,26 @@ const textArea = document.getElementById('editText')
 const closeWindowBtn = document.getElementById('close-window')
 let eventG;
 windowText.addEventListener('dblclick', ()=>{
-	editInWindow(eventG)
+	editInWindow()
 })
 
 itemDeleteBtn.addEventListener('click', ()=>{
-	deleteInWindow(eventG)
+	deleteInWindow()
 })
 
 itemEditBtn.addEventListener('click', () => {
-	editInWindow(eventG)
+	editInWindow()
 })
 
 textArea.addEventListener("keyup", (ev) => {
 	if (ev.code === 'Enter') {
 		ev.preventDefault();
-		editInWindow(eventG)
+		editInWindow()
 	}
 })
 
 closeWindowBtn.addEventListener('click', () => {
-	closeWindow(eventG)
+	closeWindow()
 })
 
 const showWindow = (event) => {
@@ -144,16 +144,16 @@ const showWindow = (event) => {
 	windowText.innerHTML = event.target.innerHTML
 }
 
-const deleteInWindow = (event) => {
+const deleteInWindow = () => {
 	if (!beingEdited && confirm('Are you sure you want to delete this item')) {
 		windowText.innerHTML = ''
-		event.target.parentElement.remove()
+		eventG.target.parentElement.remove()
 		closeWindow()
 	}
 }
 
 let oldValue
-const editInWindow = (event) => {
+const editInWindow = () => {
 	beingEdited = !beingEdited
 	if(beingEdited){
 		itemEditBtn.innerHTML = 'SAVE'
@@ -168,7 +168,7 @@ const editInWindow = (event) => {
 		textArea.style.display = 'none'
 		windowText.innerHTML = textArea.value;
 		if (textArea.value.trim() !== '') {
-			event.target.innerHTML = textArea.value
+			eventG.target.innerHTML = textArea.value
 			closeWindow()
 		}else{
 			alert('Enter Text')
