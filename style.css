@@ -78,7 +78,7 @@ button:hover{
 
 ul{
     width: 500px;
-    margin: 100px auto 0;
+    margin: 50px auto 0;
     list-style: none;
 }
 
@@ -178,6 +178,18 @@ ul li button, .controls button{
 
 #content-div > button:first-of-type{
     margin-left: auto;
+}
+
+#checker{
+    width: 150px;
+    margin: 50px auto 0;
+    font-size: 24px;
+}
+
+#checker input{
+    width: 25px;
+    height: 25px;
+    margin-top: -5px;
 }
 
 

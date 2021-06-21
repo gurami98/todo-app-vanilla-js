@@ -1,7 +1,23 @@
 const contentContainer = document.getElementById('content-div')
+const selectAll = document.getElementById('select-all')
 let count = 0;
 let beingEdited = false;
 let id;
+let itemArr = []
+const iterateArr = () => {
+	let counter = 0
+	itemArr.forEach((item, index) => {
+		if(item.children[0].checked === false) {
+			selectAll.checked = false
+			checked = false;
+		}
+		else counter++
+	})
+	if (counter === itemArr.length) {
+		selectAll.checked = true
+		checked = true;
+	}
+}
 const submitText = (e) => {
 	e.preventDefault();
 	let inputVal = document.getElementById("txt").value
@@ -14,6 +30,8 @@ const submitText = (e) => {
                 <button class="editItem" onclick="editItem(event)">EDIT</button>
                 `
 		newItem.children[1].setAttribute('id', count.toString())
+		itemArr.push(newItem)
+		iterateArr()
 		count++;
 		document.getElementById("myList").append(newItem)
 		document.getElementById("txt").value = ''
@@ -21,6 +39,23 @@ const submitText = (e) => {
 		alert('Enter Text')
 	}
 }
+
+let checked = false
+const tick = (event) => {
+	checked = !checked
+	if (checked) {
+		itemArr.forEach((item, index) => {
+			item.children[0].checked = true
+			item.children[1].classList.add('active-item')
+		})
+	}else{
+		itemArr.forEach((item, index) => {
+			item.children[0].checked = false
+			item.children[1].classList.remove('active-item')
+		})
+	}
+}
+
 
 const displayContent = (event) => {
 	const windowText = document.getElementById('window-text')
@@ -56,16 +91,26 @@ const markDone = (event) => {
 		let item = event.target.parentElement.children[1];
 		let checkBox = event.target
 
-		if (checkBox.checked) item.classList.add('active-item')
-		else item.classList.remove('active-item')
+		if (checkBox.checked) {
+			item.classList.add('active-item')
+			iterateArr()
+		}
+		else {
+			item.classList.remove('active-item')
+			selectAll.checked = false
+			iterateArr()
+		}
 	}
 }
 
 const removeItem = (event) => {
+	let item = event.target.parentElement;
 	if (!beingEdited && confirm('Are you sure you want to delete this item')) {
-			let item = event.target.parentElement;
 			item.remove()
 	}
+	let arrCollection = document.getElementById('myList').children
+	itemArr = [].slice.call(arrCollection)
+	iterateArr()
 }
 
 const removeContainerItem = (event) => {
