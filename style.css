@@ -42,9 +42,9 @@ li span{
 }
 
 #content-div textarea{
+    display: none;
     font-size: 30px;
     word-wrap: break-word;
-    display: inline-block;
     text-align: center;
     padding: 5px 10px 0;
     resize: none;

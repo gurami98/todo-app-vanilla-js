@@ -23,10 +23,11 @@
 
     <div id="content-div">
         <button onclick="closeWindow()" id="close-window">X</button>
-        <span ondblclick="editContainerItem(event)" id="window-text"> </span>
+        <span id="window-text"> </span>
+        <textarea id="editText"></textarea>
         <div class="controls">
-            <button class="removeItem" onclick="removeContainerItem(event)">DELETE</button>
-            <button class="editItem" onclick="editContainerItem(event)">EDIT</button>
+            <button class="removeItem" id="window-item-delete">DELETE</button>
+            <button class="editItem" id="window-item-edit">EDIT</button>
         </div>
     </div>
 
