@@ -124,6 +124,10 @@ ul li button, .controls button{
     background-color: #eee;
 }
 
+#myList li input[type="text"]{
+    display: none;
+}
+
 #content-div{
     z-index: 10;
     flex-direction: column;
