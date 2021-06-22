@@ -78,6 +78,7 @@ button:hover{
 
 ul{
     width: 500px;
+    height: 500px;
     margin: 50px auto 0;
     list-style: none;
 }
@@ -208,5 +209,26 @@ ul li button, .controls button{
     margin-left: 100px;
 }
 
+
+#pagination{
+    width: 500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 20px auto 0;
+}
+
+#pagination button{
+    color: white;
+    border: 0;
+    height: 30px;
+    width: 30px;
+    background-color: #0275d8;
+}
+
+#pagination button:hover{
+    cursor: pointer;
+    background-color: rgba(2,117,216,0.5);
+}
 
 
