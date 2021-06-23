@@ -1,12 +1,12 @@
 const contentContainer = document.getElementById('content-div')
-const selectAll = document.getElementById('select-all')
+const selectAllCheckbox = document.getElementById('select-all')
 let beingEdited = false;
 let itemArr = []
-let selectedItemArr = []
 let checked = false
+let pageCount = 1;
 const iterateArr = () => {
-	selectAll.checked = itemArr.every(item => item.children[0].checked)
-	checked = selectAll.checked;
+	selectAllCheckbox.checked = itemArr.every(item => item.children[0].checked)
+	checked = selectAllCheckbox.checked;
 }
 // map filter
 const submitText = (e) => {
@@ -28,13 +28,25 @@ const submitText = (e) => {
 				editItem(event)
 			}
 		});
-		itemArr.push(newItem)
-		iterateArr()
-		document.getElementById("myList").append(newItem)
-		document.getElementById("txt").value = ''
-	} else {
-		alert('Enter Text')
+		itemArr.push(newItem) //
+		document.getElementById("myList").append(newItem) //
+		document.getElementById("txt").value = ''//
+		if (itemArr.length % 8 === 1 && itemArr.length >= 8) {
+			if (pageCount * 8 < itemArr.length) newItem.style.display = 'none'
+			pageCount++
+			let newPageBtn = document.createElement('button')
+			newPageBtn.addEventListener('click', () => changePage(event.target.innerHTML))
+			newPageBtn.innerHTML = pageCount.toString();
+			document.getElementById("pagination").append(newPageBtn)
+			changePage(pageCount)
+		}
+		else if (itemArr.length >= 8){
+			if(activePage !== pageCount) changePage(pageCount)
+			if (pageCount * 8 < itemArr.length) newItem.style.display = 'none'
+		}
+		else iterateArr()
 	}
+	else alert('Enter Text')
 }
 
 const removeItem = (event) => {
@@ -44,6 +56,13 @@ const removeItem = (event) => {
 	}
 	let arrCollection = document.getElementById('myList').children
 	itemArr = [].slice.call(arrCollection)
+	const lastPage = document.getElementById('pagination').lastChild
+	changePage(activePage)
+	if(itemArr.length === (pageCount - 1) * 8 && pageCount !== 1){
+		pageCount = pageCount - 1
+		lastPage.remove()
+		changePage(pageCount)
+	}
 	iterateArr()
 }
 
@@ -63,15 +82,15 @@ const editItem = (event) => {
 		inputText.focus()
 		inputText.value = itemTextContainer.innerHTML
 		itemTextContainer.style.display = 'none'
-	}else{
-		if (inputText.value.trim() !== '') {
+	} else {
+		if (inputText.value.trim()) {
 			editBtn.innerHTML = 'EDIT'
 			checkBox.disabled = false
 			deleteBtn.disabled = false
 			inputText.style.display = 'none'
 			itemTextContainer.innerHTML = inputText.value
 			itemTextContainer.style.display = 'inline-block'
-		}else{
+		} else {
 			alert('Enter Text')
 			beingEdited = true
 		}
@@ -85,7 +104,7 @@ const tick = () => {
 			item.children[0].checked = true
 			item.children[1].classList.add('active-item')
 		})
-	}else{
+	} else {
 		itemArr.forEach((item) => {
 			item.children[0].checked = false
 			item.children[1].classList.remove('active-item')
@@ -101,10 +120,9 @@ const markDone = (event) => {
 		if (checkBox.checked) {
 			item.classList.add('active-item')
 			iterateArr()
-		}
-		else {
+		} else {
 			item.classList.remove('active-item')
-			selectAll.checked = false
+			selectAllCheckbox.checked = false
 			iterateArr()
 		}
 	}
@@ -116,11 +134,11 @@ const itemEditBtn = document.getElementById('window-item-edit')
 const textArea = document.getElementById('editText')
 const closeWindowBtn = document.getElementById('close-window')
 let eventG;
-windowText.addEventListener('dblclick', ()=>{
+windowText.addEventListener('dblclick', () => {
 	editInWindow()
 })
 
-itemDeleteBtn.addEventListener('click', ()=>{
+itemDeleteBtn.addEventListener('click', () => {
 	deleteInWindow()
 })
 
@@ -156,14 +174,14 @@ const deleteInWindow = () => {
 let oldValue
 const editInWindow = () => {
 	beingEdited = !beingEdited
-	if(beingEdited){
+	if (beingEdited) {
 		itemEditBtn.innerHTML = 'SAVE'
 		textArea.style.display = 'inline-block'
 		textArea.value = windowText.innerHTML
 		oldValue = windowText.innerHTML
 		textArea.focus()
 		windowText.style.display = 'none'
-	}else{
+	} else {
 		itemEditBtn.innerHTML = 'EDIT'
 		windowText.style.display = 'inline-block'
 		textArea.style.display = 'none'
@@ -171,14 +189,14 @@ const editInWindow = () => {
 		if (textArea.value.trim() !== '') {
 			eventG.target.innerHTML = textArea.value
 			closeWindow()
-		}else{
+		} else {
 			alert('Enter Text')
 		}
 	}
 }
 
 const closeWindow = () => {
-	if(beingEdited) {
+	if (beingEdited) {
 		windowText.innerHTML = oldValue;
 		windowText.style.display = 'inline-block'
 		textArea.style.display = 'none'
@@ -189,9 +207,38 @@ const closeWindow = () => {
 }
 
 const deleteSelected = () => {
-	if(itemArr.length === 0) alert('Check at least one item')
+	if (itemArr.length === 0) alert('Check at least one item')
 	else itemArr = itemArr.filter(item => {
 		if (item.children[0].checked) item.remove()
 		return !item.children[0].checked;
+	})
+	changePage(activePage)
+	if(itemArr.length <= (pageCount - 1) * 8 && pageCount !== 1){
+		while (itemArr.length <= (pageCount - 1) * 8 && pageCount !== 1) {
+			let lastPage = document.getElementById('pagination').lastChild
+			lastPage.remove()
+			pageCount = pageCount - 1
+		}
+		changePage(pageCount)
+	}
+}
+
+let activePage = 1
+const changePage = (index) => {
+	let btns = document.getElementById('pagination')
+	let btnsArr = [].slice.call(btns.children)
+	btnsArr.forEach(item => {
+		if(item.className === 'active-page') item.classList.remove('active-page')
+	})
+	btns.children[index - 1].classList.add('active-page')
+	activePage = index
+	let startIndex = (index - 1) * 8
+	let endIndex = startIndex + 7
+	itemArr.map((item, index) => {
+		if(index >= startIndex && index <= endIndex){
+			item.style.display = 'flex'
+		}else{
+			item.style.display = 'none'
+		}
 	})
 }
