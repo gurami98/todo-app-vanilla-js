@@ -2,7 +2,6 @@ const contentContainer = document.getElementById('content-div')
 const selectAll = document.getElementById('select-all')
 let beingEdited = false;
 let itemArr = []
-let selectedItemArr = []
 let checked = false
 let pageCount = 1;
 const iterateArr = () => {
@@ -30,17 +29,16 @@ const submitText = (e) => {
 			}
 		});
 		if (itemArr.length % 8 === 0 && itemArr.length >= 8) {
-			console.log("1")
 			itemArr.push(newItem)
 			document.getElementById("myList").append(newItem)
 			if (pageCount * 8 < itemArr.length) newItem.style.display = 'none'
 			document.getElementById("txt").value = ''
 			pageCount++
-			changePage(pageCount)
 			let newPageBtn = document.createElement('button')
 			newPageBtn.addEventListener('click', () => changePage(event.target.innerHTML))
 			newPageBtn.innerHTML = pageCount.toString();
 			document.getElementById("pagination").append(newPageBtn)
+			changePage(pageCount)
 		}
 		else if (itemArr.length >= 8){
 			if(activePage !== pageCount) changePage(pageCount)
@@ -54,10 +52,6 @@ const submitText = (e) => {
 			document.getElementById("myList").append(newItem)
 			document.getElementById("txt").value = ''
 		}
-
-
-		console.log(itemArr.length)
-
 	} else {
 		alert('Enter Text')
 	}
@@ -71,8 +65,6 @@ const removeItem = (event) => {
 	let arrCollection = document.getElementById('myList').children
 	itemArr = [].slice.call(arrCollection)
 	let lastPage = document.getElementById('pagination').lastChild
-	console.log(lastPage)
-	console.log(itemArr.length, pageCount)
 	changePage(activePage)
 	if(itemArr.length === (pageCount - 1) * 8 && pageCount !== 1){
 		pageCount = pageCount - 1
@@ -80,7 +72,6 @@ const removeItem = (event) => {
 		changePage(pageCount)
 	}
 	iterateArr()
-
 }
 
 const editItem = (event) => {
@@ -197,7 +188,6 @@ const editInWindow = () => {
 		textArea.value = windowText.innerHTML
 		oldValue = windowText.innerHTML
 		textArea.focus()
-
 		windowText.style.display = 'none'
 	} else {
 		itemEditBtn.innerHTML = 'EDIT'
@@ -230,7 +220,6 @@ const deleteSelected = () => {
 		if (item.children[0].checked) item.remove()
 		return !item.children[0].checked;
 	})
-	console.log(itemArr)
 	changePage(activePage)
 	if(itemArr.length <= (pageCount - 1) * 8 && pageCount !== 1){
 		while (itemArr.length <= (pageCount - 1) * 8 && pageCount !== 1) {
@@ -242,10 +231,15 @@ const deleteSelected = () => {
 	}
 }
 
-let activePage
+let activePage = 1
 const changePage = (index) => {
+	let btns = document.getElementById('pagination')
+	let btnsArr = [].slice.call(btns.children)
+	btnsArr.forEach(item => {
+		if(item.className === 'active-page') item.classList.remove('active-page')
+	})
+	btns.children[index - 1].classList.add('active-page')
 	activePage = index
-	console.log(index)
 	let startIndex = (index - 1) * 8
 	let endIndex = (index * 8) - 1
 	itemArr.map((item, index) => {
