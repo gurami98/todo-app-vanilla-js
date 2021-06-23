@@ -1,12 +1,12 @@
 const contentContainer = document.getElementById('content-div')
-const selectAll = document.getElementById('select-all')
+const selectAllCheckbox = document.getElementById('select-all')
 let beingEdited = false;
 let itemArr = []
 let checked = false
 let pageCount = 1;
 const iterateArr = () => {
-	selectAll.checked = itemArr.every(item => item.children[0].checked)
-	checked = selectAll.checked;
+	selectAllCheckbox.checked = itemArr.every(item => item.children[0].checked)
+	checked = selectAllCheckbox.checked;
 }
 // map filter
 const submitText = (e) => {
@@ -28,11 +28,11 @@ const submitText = (e) => {
 				editItem(event)
 			}
 		});
-		if (itemArr.length % 8 === 0 && itemArr.length >= 8) {
-			itemArr.push(newItem)
-			document.getElementById("myList").append(newItem)
+		itemArr.push(newItem) //
+		document.getElementById("myList").append(newItem) //
+		document.getElementById("txt").value = ''//
+		if (itemArr.length % 8 === 1 && itemArr.length >= 8) {
 			if (pageCount * 8 < itemArr.length) newItem.style.display = 'none'
-			document.getElementById("txt").value = ''
 			pageCount++
 			let newPageBtn = document.createElement('button')
 			newPageBtn.addEventListener('click', () => changePage(event.target.innerHTML))
@@ -42,19 +42,11 @@ const submitText = (e) => {
 		}
 		else if (itemArr.length >= 8){
 			if(activePage !== pageCount) changePage(pageCount)
-			itemArr.push(newItem)
-			document.getElementById("myList").append(newItem)
 			if (pageCount * 8 < itemArr.length) newItem.style.display = 'none'
-			document.getElementById("txt").value = ''
-		}else{
-			itemArr.push(newItem)
-			iterateArr()
-			document.getElementById("myList").append(newItem)
-			document.getElementById("txt").value = ''
 		}
-	} else {
-		alert('Enter Text')
+		else iterateArr()
 	}
+	else alert('Enter Text')
 }
 
 const removeItem = (event) => {
@@ -64,7 +56,7 @@ const removeItem = (event) => {
 	}
 	let arrCollection = document.getElementById('myList').children
 	itemArr = [].slice.call(arrCollection)
-	let lastPage = document.getElementById('pagination').lastChild
+	const lastPage = document.getElementById('pagination').lastChild
 	changePage(activePage)
 	if(itemArr.length === (pageCount - 1) * 8 && pageCount !== 1){
 		pageCount = pageCount - 1
@@ -91,7 +83,7 @@ const editItem = (event) => {
 		inputText.value = itemTextContainer.innerHTML
 		itemTextContainer.style.display = 'none'
 	} else {
-		if (inputText.value.trim() !== '') {
+		if (inputText.value.trim()) {
 			editBtn.innerHTML = 'EDIT'
 			checkBox.disabled = false
 			deleteBtn.disabled = false
@@ -130,7 +122,7 @@ const markDone = (event) => {
 			iterateArr()
 		} else {
 			item.classList.remove('active-item')
-			selectAll.checked = false
+			selectAllCheckbox.checked = false
 			iterateArr()
 		}
 	}
@@ -241,7 +233,7 @@ const changePage = (index) => {
 	btns.children[index - 1].classList.add('active-page')
 	activePage = index
 	let startIndex = (index - 1) * 8
-	let endIndex = (index * 8) - 1
+	let endIndex = startIndex + 7
 	itemArr.map((item, index) => {
 		if(index >= startIndex && index <= endIndex){
 			item.style.display = 'flex'
